@@ -57,7 +57,6 @@ The field contains all the properties of the files field (layout, size, query, e
 |:----------------|:--------|:----------------------------------------------------------------------------------------|:----------------------------------------------------|
 | cssMaxHeight    | int     | null                                                                                    | Canvas css-max-height                               |
 | cssMaxWidth     | int     | null                                                                                    | Canvas css-max-width                                |
-| filename        | Closure |                                                                                         | Returns the new name of the modified file.          |
 | menu            | array   | ['resize', 'crop', 'flip', 'rotate', 'draw', 'shape', 'icon', 'text', 'mask', 'filter'] | It can be selected when only specific menu is used  |
 | menuBarPosition | string  | left                                                                                    | Menu bar position('top', 'bottom', 'left', 'right') |
 
@@ -75,10 +74,7 @@ return [
         'cssMaxWidth' => 1200,
         'cssMaxHeight' => 900,
         'menu' => ['resize', 'crop'],
-        'menuBarPosition' => 'bottom',
-        'filename' => function (File $file): string {
-            return $file->name() . '-custom-prefix-' . uniqid();
-        }
+        'menuBarPosition' => 'bottom'
     ]
 ];
 ```

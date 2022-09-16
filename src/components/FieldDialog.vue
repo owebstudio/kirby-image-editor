@@ -1,13 +1,49 @@
 <template>
   <k-dialog ref="dialog" size="fullscreen">
     <template>
-      <tui-image-editor ref="editor" :include-ui="true" :options="options"/>
+      <tui-image-editor
+          ref="editor"
+          :include-ui="true"
+          :options="options"
+      />
+      <k-form-dialog
+          ref="rename"
+          v-model="value"
+          :fields="fields"
+          @close="$emit('close')"
+          @submit="onSaveAs"
+      />
+
+      <k-dialog
+          ref="overwrite"
+          :submit-button="$t('confirm')"
+          theme="negative"
+          @submit="onSave"
+      >
+        <k-text>{{ $t("owebstudio.tui-image-editor.save.confirm") }}</k-text>
+      </k-dialog>
     </template>
 
     <template slot="footer">
       <k-button-group>
-        <k-button icon="cancel" :text="$t('cancel')" @click="$refs.dialog.close()"/>
-        <k-button icon="check" :text="$t('save')" @click="submit"/>
+        <k-button
+            class="k-button-cancel"
+            icon="cancel"
+            :text="$t('cancel')"
+            @click="$refs.dialog.close()"
+        />
+        <k-button
+            class="k-button-save-as"
+            icon="download"
+            :text="$t('owebstudio.tui-image-editor.save.as')"
+            @click="rename"
+        />
+        <k-button
+            class="k-button-save"
+            icon="check"
+            :text="$t('save')"
+            @click="save"
+        />
       </k-button-group>
     </template>
   </k-dialog>
@@ -26,15 +62,30 @@ export default {
     cssMaxHeight: Number,
     cssMaxWidth: Number,
     endpoints: Object,
+    model: Object,
     menu: Array,
     menuBarPosition: String
   },
   data() {
     return {
-      image: {}
-    };
+      value: {
+        name: this.generateFilename()
+      }
+    }
   },
   computed: {
+    fields() {
+      return {
+        name: {
+          label: this.$t("name"),
+          type: "slug",
+          icon: "title",
+          allow: "@._-",
+          after: "." + this.extension(),
+          required: true
+        }
+      };
+    },
     options() {
       return {
         includeUI: {
@@ -59,28 +110,87 @@ export default {
     }
   },
   methods: {
-    open(image) {
-      this.image = image;
+    filename() {
+      return this.model.filename.split('.').slice(0, -1).join('.');
+    },
+    generateFilename() {
+      return this.filename() + "-tuiie-" + (this.$helper.uuid()).slice(0, 13);
+    },
+    format() {
+      let format = "png";
+      const extension = this.extension();
+      if (["jpg", "jpeg"].includes(extension)) {
+        format = "jpeg";
+      }
 
-      this.options.includeUI.loadImage.name = this.image.text;
-      this.options.includeUI.loadImage.path = this.image.image.url;
+      return format;
+    },
+    extension() {
+      const supports = ["png", "jpg", "jpeg"];
+      const extension = this.model.filename.split('.').pop().toLowerCase();
+
+      if (supports.includes(extension)) {
+        return extension;
+      }
+
+      return "png";
+    },
+    open() {
+      this.options.includeUI.loadImage.name = this.model.text;
+      this.options.includeUI.loadImage.path = this.model.image.url;
 
       this.$refs.dialog.open();
     },
-    async submit() {
-      const image = this.$refs.editor.invoke('toDataURL');
+    rename() {
+      return this.$refs.rename.open();
+    },
+    save() {
+      return this.$refs.overwrite.open();
+    },
+    async onSave() {
+      const image = this.$refs.editor.invoke("toDataURL", {
+        format: this.format()
+      });
 
       if (image) {
-        const newFile = await this.$api.post(this.endpoints.field + "/modify", {
-          id: this.image.id,
-          filename: this.image.filename,
+        const newFile = await this.$api.post(this.endpoints.field + "/save", {
+          id: this.model.id,
+          filename: this.model.filename,
           image: image
         });
 
         if (newFile) {
-          this.$emit('submit', {
-            'oldFile': this.image,
-            'newFile': newFile,
+          this.$emit("submit", {
+            "oldFile": this.model,
+            "newFile": newFile,
+            "overwrite": true
+          })
+        }
+      }
+
+      this.$refs.dialog.close();
+    },
+    async onSaveAs() {
+      this.$refs.rename.close();
+
+
+      const image = this.$refs.editor.invoke("toDataURL", {
+        format: this.format()
+      });
+
+      if (image) {
+        const newFile = await this.$api.post(this.endpoints.field + "/saveas", {
+          id: this.model.id,
+          filename: this.model.filename,
+          rename: this.value.name,
+          image: image
+        });
+
+        if (newFile) {
+          this.$emit("submit", {
+            "oldFile": this.model,
+            "newFile": newFile,
+            "overwrite": false
           })
         }
       }
@@ -99,5 +209,9 @@ export default {
 
 .k-dialog[data-size="fullscreen"] .k-dialog-body {
   display: contents;
+}
+
+.k-dialog[data-size="fullscreen"] footer .k-button-cancel {
+  margin-right: auto;
 }
 </style>

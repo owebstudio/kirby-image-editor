@@ -33,7 +33,13 @@
     <k-files-dialog ref="selector" @submit="select"/>
     <k-upload ref="fileUpload" @success="upload"/>
 
-    <k-image-editor-dialog v-bind="$props" ref="dialog" @submit="modifiedImage"/>
+    <k-image-editor-dialog
+        v-if="currentModel"
+        v-bind="$props"
+        :model="currentModel"
+        ref="dialog"
+        @submit="modifiedImage"
+    />
   </k-field>
 </template>
 
@@ -52,24 +58,52 @@ export default {
     menu: Array,
     menuBarPosition: String,
   },
+  data() {
+    return {
+      currentModel: null
+    };
+  },
   computed: {},
   methods: {
     initImageEditor(index) {
       const image = this.selected[index];
 
       if (image) {
-        this.$refs.dialog.open(image);
+        this.currentModel = image;
+
+        this.$nextTick(() => {
+          this.$refs.dialog.open();
+        });
       }
     },
     modifiedImage(data) {
       const oldFile = data["oldFile"];
       const newFile = data["newFile"];
+      const overwrite = data["overwrite"];
 
-      this.selected = this.selected.filter((item) => item.id !== oldFile.id);
-      this.selected.push(newFile);
+      // update with new file item
+      this.selected = this.selected.map(item => {
+        if (item.id === oldFile.id) {
+          return newFile;
+        }
+        return item;
+      });
 
-      this.$emit("input", this.selected);
-      this.onInput();
+      if (overwrite === false) {
+        // if used save as update the state
+        this.$emit("input", this.selected);
+        this.onInput();
+      } else {
+        // if used save as overwrite, do not update the state
+        // unless there are content changes for related field
+        let fieldName = this.name
+        let contentId = this.$store.state.content.current
+        let contentChanges = this.$store.getters['content/changes'](contentId)[fieldName];
+
+        if (contentChanges) {
+          this.$emit("input", this.selected);
+        }
+      }
     }
   }
 };

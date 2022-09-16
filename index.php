@@ -11,10 +11,7 @@ Kirby::plugin('owebstudio/tui-image-editor', [
         'menu' => [
             'resize', 'crop', 'flip', 'rotate', 'draw', 'shape', 'icon', 'text', 'mask', 'filter'
         ],
-        'menuBarPosition' => 'left',
-        'filename' => function (File $file): string {
-            return $file->name() . '-tuiie-' . uniqid();
-        }
+        'menuBarPosition' => 'left'
     ],
     'fields' => [
         'image-editor' => [
@@ -84,7 +81,7 @@ Kirby::plugin('owebstudio/tui-image-editor', [
                         }
                     ],
                     [
-                        'pattern' => 'modify',
+                        'pattern' => 'save',
                         'method' => 'POST',
                         'action' => function () {
                             $field = $this->field();
@@ -96,8 +93,46 @@ Kirby::plugin('owebstudio/tui-image-editor', [
 
                             if (empty($image) === false && $file = $parent->file($filename)) {
                                 try {
-                                    $newFilenameClosure = Kirby::instance()->option('owebstudio.tui-image-editor.filename');
-                                    $newFileName = $newFilenameClosure->call($this, $file) . '.png';
+                                    $data = explode(',', $image);
+                                    $content = base64_decode($data[1]);
+
+                                    F::write($file->root(), $content);
+
+                                    $newFile = new File([
+                                        'filename' => $file->filename(),
+                                        'parent' => $parent
+                                    ]);
+
+                                    return $newFile->panel()->pickerData([
+                                        'image' => $field->image,
+                                        'info' => $field->info ?? false,
+                                        'layout' => $field->layout,
+                                        'model' => $field->model(),
+                                        'text' => $field->text,
+                                    ]);
+                                } catch (Exception $e) {
+                                    //
+                                }
+                            }
+
+                            return null;
+                        }
+                    ],
+                    [
+                        'pattern' => 'saveas',
+                        'method' => 'POST',
+                        'action' => function () {
+                            $field = $this->field();
+                            $parent = $field->model();
+
+                            $id = get('id');
+                            $filename = get('filename');
+                            $rename = get('rename');
+                            $image = get('image');
+
+                            if (empty($image) === false && $file = $parent->file($filename)) {
+                                try {
+                                    $newFileName = ($rename ?? ($file->name() . '-tuiie-' . uniqid())) . '.png';
                                     $newFilePath = $parent->root() . '/' . $newFileName;
 
                                     $data = explode(',', $image);
@@ -128,5 +163,23 @@ Kirby::plugin('owebstudio/tui-image-editor', [
                 ];
             },
         ]
+    ],
+    'translations' => [
+        'de' => [
+            'owebstudio.tui-image-editor.save.as' => 'Speichern als',
+            'owebstudio.tui-image-editor.save.confirm' => 'Möchten Sie das aktuelle Bild wirklich überschreiben?',
+        ],
+        'fr' => [
+            'owebstudio.tui-image-editor.save.as' => 'Enregistrer sous',
+            'owebstudio.tui-image-editor.save.confirm' => 'Voulez-vous vraiment écraser l\'image actuelle ?',
+        ],
+        'en' => [
+            'owebstudio.tui-image-editor.save.as' => 'Save as',
+            'owebstudio.tui-image-editor.save.confirm' => 'Do you really want to overwrite the current image?',
+        ],
+        'tr' => [
+            'owebstudio.tui-image-editor.save.as' => 'Farklı kaydet',
+            'owebstudio.tui-image-editor.save.confirm' => 'Mevcut görüntünün üzerine gerçekten yazmak istiyor musunuz?',
+        ],
     ]
 ]);
