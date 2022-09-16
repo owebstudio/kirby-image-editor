@@ -39,6 +39,7 @@
             @click="rename"
         />
         <k-button
+            v-if="isOverwriteSupported"
             class="k-button-save"
             icon="check"
             :text="$t('save')"
@@ -59,12 +60,9 @@ export default {
     "tui-image-editor": ImageEditor
   },
   props: {
-    cssMaxHeight: Number,
-    cssMaxWidth: Number,
     endpoints: Object,
     model: Object,
-    menu: Array,
-    menuBarPosition: String
+    params: Object
   },
   data() {
     return {
@@ -74,6 +72,16 @@ export default {
     }
   },
   computed: {
+    extension() {
+      const supports = this.supports;
+      const extension = this.realExtension;
+
+      if (supports.includes(extension)) {
+        return extension;
+      }
+
+      return "png";
+    },
     fields() {
       return {
         name: {
@@ -81,10 +89,26 @@ export default {
           type: "slug",
           icon: "title",
           allow: "@._-",
-          after: "." + this.extension(),
+          after: "." + this.extension,
           required: true
         }
       };
+    },
+    filename() {
+      return this.model.filename.split('.').slice(0, -1).join('.');
+    },
+    format() {
+      let format = "png";
+      const extension = this.realExtension;
+
+      if (["jpg", "jpeg"].includes(extension)) {
+        format = "jpeg";
+      }
+
+      return format;
+    },
+    isOverwriteSupported() {
+      return this.supports.includes(this.realExtension);
     },
     options() {
       return {
@@ -96,44 +120,28 @@ export default {
           theme: {
             "header.display": "none"
           },
-          menu: this.$props['menu'],
-          menuBarPosition: this.$props['menuBarPosition'],
+          menu: this.params.menu,
+          menuBarPosition: this.params.menuBarPosition,
           uiSize: {
             width: '100%',
             height: '100%'
           }
         },
-        cssMaxWidth: this.$props['cssMaxWidth'],
-        cssMaxHeight: this.$props['cssMaxHeight'],
+        cssMaxHeight: this.params.cssMaxHeight,
+        cssMaxWidth: this.params.cssMaxWidth,
         usageStatistics: false
       };
+    },
+    realExtension() {
+      return this.model.filename.split('.').pop().toLowerCase();
+    },
+    supports() {
+      return ["png", "jpg", "jpeg"];
     }
   },
   methods: {
-    filename() {
-      return this.model.filename.split('.').slice(0, -1).join('.');
-    },
     generateFilename() {
-      return this.filename() + "-tuiie-" + (this.$helper.uuid()).slice(0, 13);
-    },
-    format() {
-      let format = "png";
-      const extension = this.extension();
-      if (["jpg", "jpeg"].includes(extension)) {
-        format = "jpeg";
-      }
-
-      return format;
-    },
-    extension() {
-      const supports = ["png", "jpg", "jpeg"];
-      const extension = this.model.filename.split('.').pop().toLowerCase();
-
-      if (supports.includes(extension)) {
-        return extension;
-      }
-
-      return "png";
+      return this.filename + "-tuiie-" + (this.$helper.uuid()).slice(0, 13);
     },
     open() {
       this.options.includeUI.loadImage.name = this.model.text;
@@ -149,7 +157,7 @@ export default {
     },
     async onSave() {
       const image = this.$refs.editor.invoke("toDataURL", {
-        format: this.format()
+        format: this.format
       });
 
       if (image) {
@@ -175,7 +183,7 @@ export default {
 
 
       const image = this.$refs.editor.invoke("toDataURL", {
-        format: this.format()
+        format: this.format
       });
 
       if (image) {

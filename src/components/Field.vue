@@ -36,6 +36,7 @@
     <k-image-editor-dialog
         v-if="currentModel"
         v-bind="$props"
+        :params="params"
         :model="currentModel"
         ref="dialog"
         @submit="modifiedImage"
@@ -47,7 +48,7 @@
 import FieldDialog from "./FieldDialog.vue"
 
 export default {
-  extends: 'k-files-field',
+  extends: "k-files-field",
   components: {
     "k-image-editor-dialog": FieldDialog
   },
@@ -60,7 +61,13 @@ export default {
   },
   data() {
     return {
-      currentModel: null
+      currentModel: null,
+      params: {
+        cssMaxHeight: this.cssMaxHeight,
+        cssMaxWidth: this.cssMaxWidth,
+        menu: this.menu,
+        menuBarPosition: this.menuBarPosition
+      }
     };
   },
   computed: {},
