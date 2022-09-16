@@ -45,12 +45,12 @@
 </template>
 
 <script>
-import FieldDialog from "./FieldDialog.vue"
+import ImageEditorDialog from "./ImageEditorDialog.vue"
 
 export default {
   extends: "k-files-field",
   components: {
-    "k-image-editor-dialog": FieldDialog
+    "k-image-editor-dialog": ImageEditorDialog
   },
   props: {
     cssMaxHeight: Number,
