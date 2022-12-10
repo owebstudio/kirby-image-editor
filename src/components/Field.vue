@@ -36,8 +36,8 @@
     <k-image-editor-dialog
         v-if="currentModel"
         v-bind="$props"
-        :params="params"
         :model="currentModel"
+        :params="params"
         ref="dialog"
         @submit="modifiedImage"
     />

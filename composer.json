@@ -2,7 +2,7 @@
   "name": "owebstudio/kirby-tui-image-editor",
   "description": "Full-featured photo image editor using canvas for Kirby 3. It is really easy, and it comes with great filters.",
   "type": "kirby-plugin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
   "keywords": [
     "owebstudio",
@@ -26,6 +26,9 @@
     }
   ],
   "config": {
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    },
     "optimize-autoloader": true,
     "preferred-install": "dist",
     "sort-packages": true

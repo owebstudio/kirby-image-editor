@@ -8,9 +8,10 @@
       />
       <k-form-dialog
           ref="rename"
-          v-model="value"
+          :value="value"
           :fields="fields"
           @close="$emit('close')"
+          @input="value = $event"
           @submit="onSaveAs"
       />
 
@@ -94,9 +95,6 @@ export default {
         }
       };
     },
-    filename() {
-      return this.model.filename.split('.').slice(0, -1).join('.');
-    },
     format() {
       let format = "png";
       const extension = this.realExtension;
@@ -141,7 +139,10 @@ export default {
   },
   methods: {
     generateFilename() {
-      return this.filename + "-tuiie-" + (this.$helper.uuid()).slice(0, 13);
+      return this.filename() + "-tuiie-" + (this.$helper.uuid()).slice(0, 13);
+    },
+    filename() {
+      return this.model.filename.split('.').slice(0, -1).join('.');
     },
     open() {
       this.options.includeUI.loadImage.name = this.model.text;
