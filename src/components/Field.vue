@@ -1,12 +1,17 @@
 <template>
   <k-field v-bind="$props" class="k-files-field k-image-editor-field">
-    <template v-if="more && !disabled" #options>
-      <k-button-group class="k-field-options">
-        <k-options-dropdown ref="options" v-bind="options" @action="onAction"/>
-      </k-button-group>
+    <template v-if="!disabled" #options>
+      <k-button-group
+          ref="buttons"
+          :buttons="buttons"
+          layout="collapsed"
+          size="xs"
+          variant="filled"
+          class="k-field-options"
+      />
     </template>
 
-    <k-dropzone :disabled="!moreUpload" @drop="drop">
+    <k-dropzone :disabled="!hasDropzone" @drop="drop">
       <k-collection
           v-bind="collection"
           @empty="prompt"
@@ -30,7 +35,7 @@
       </k-collection>
     </k-dropzone>
 
-    <k-files-dialog ref="selector" @submit="select"/>
+    <k-files-dialog ref="selector" :endpoint="endpoints.field" @submit="select"/>
     <k-upload ref="fileUpload" @success="upload"/>
 
     <k-image-editor-dialog
@@ -49,6 +54,7 @@ import ImageEditorDialog from "./ImageEditorDialog.vue"
 
 export default {
   extends: "k-files-field",
+  type: "files",
   components: {
     "k-image-editor-dialog": ImageEditorDialog
   },
@@ -60,6 +66,9 @@ export default {
     menuBarPosition: String,
   },
   data() {
+    console.log(this.disabled);
+    console.log(this.more);
+    console.log(this.hasDropzone);
     return {
       currentModel: null,
       params: {

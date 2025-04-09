@@ -1,6 +1,6 @@
 # Kirby Image Editor Field
 
-Full-featured photo image editor using canvas for Kirby 3. It is really easy, and it comes with great filters.
+Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.
 
 ![image-editor](https://user-images.githubusercontent.com/3393422/190390702-f467dcf1-4e15-403b-866b-ee9e018ddc51.gif)
 

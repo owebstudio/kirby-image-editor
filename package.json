@@ -1,6 +1,6 @@
 {
   "name": "kirby-tui-image-editor",
-  "description": "Full-featured photo image editor using canvas for Kirby 3. It is really easy, and it comes with great filters.",
+  "description": "Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.",
   "main": "index.js",
   "author": "oweb studio <contact@owebstudio.com> (https://owebstudio.com)",
   "license": "MIT",

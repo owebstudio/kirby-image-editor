@@ -213,7 +213,7 @@ export default {
 <style>
 .k-dialog[data-size="fullscreen"] {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 2rem);
 }
 
 .k-dialog[data-size="fullscreen"] .k-dialog-body {
@@ -222,5 +222,14 @@ export default {
 
 .k-dialog[data-size="fullscreen"] footer .k-button-cancel {
   margin-right: auto;
+}
+
+.tui-image-editor-container .tui-image-editor-main-container {
+  top: 0;
+  bottom: 0;
+}
+
+.tui-image-editor-container .tui-image-editor-main {
+  top: 0;
 }
 </style>
