@@ -92,4 +92,4 @@ Without a license key, the editor still opens on a live site, but saving the edi
 working.
 
 [oweb studio Commercial License](LICENSE.md). Versions released under the MIT license stay MIT. The current license is
-available at https://owebstudio.com/license.
+available [on GitHub](https://github.com/owebstudio/.github/blob/main/LICENSE.md).
