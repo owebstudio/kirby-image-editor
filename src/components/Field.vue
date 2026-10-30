@@ -36,7 +36,6 @@
     </k-dropzone>
 
     <k-files-dialog ref="selector" :endpoint="endpoints.field" @submit="select"/>
-    <k-upload ref="fileUpload" @success="upload"/>
 
     <k-image-editor-dialog
         v-if="currentModel"
@@ -112,14 +111,19 @@ export default {
       } else {
         // if used save as overwrite, do not update the state
         // unless there are content changes for related field
-        let fieldName = this.name
-        let contentId = this.$store.state.content.current
-        let contentChanges = this.$store.getters['content/changes'](contentId)[fieldName];
-
-        if (contentChanges) {
+        if (this.hasContentChanges()) {
           this.$emit("input", this.selected);
         }
       }
+    },
+    hasContentChanges() {
+      // Kirby 4
+      if (this.$store) {
+        let contentId = this.$store.state.content.current
+        return Boolean(this.$store.getters['content/changes'](contentId)[this.name]);
+      }
+
+      return this.$panel.content.diff()[this.name] !== undefined;
     }
   }
 };
