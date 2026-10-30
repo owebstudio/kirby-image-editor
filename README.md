@@ -1,5 +1,7 @@
 # Kirby Image Editor Field
 
+[![Buy a license for €19.99](https://img.shields.io/badge/Buy_a_license-%E2%82%AC19.99-2ea44f?style=for-the-badge&labelColor=1f6f3a)](https://owebstudio.lemonsqueezy.com/checkout/buy/8a06fd59-6e0c-4426-9c1b-95581fd7374a)
+
 Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.
 
 ![image-editor](https://user-images.githubusercontent.com/3393422/190390702-f467dcf1-4e15-403b-866b-ee9e018ddc51.gif)
@@ -82,12 +84,12 @@ return [
 ## License
 
 Image Editor Field is a commercial plugin. It is free to use on your local computer and on staging sites. A live site needs
-a license key: buy it on [owebstudio.com](https://owebstudio.com/kirby/plugins/image-editor-field) and activate it in the
-Panel with the button in the field's notice, or in the System view (Kirby 5 and newer) by clicking the license status of
-the plugin.
+a license key: [buy it](https://owebstudio.lemonsqueezy.com/checkout/buy/8a06fd59-6e0c-4426-9c1b-95581fd7374a) and
+activate it in the Panel with the button in the field's notice, or in the System view (Kirby 5 and newer) by clicking the
+license status of the plugin.
 
 Without a license key, the editor still opens on a live site, but saving the edited image is locked. Your website keeps
 working.
 
 [oweb studio Commercial License](LICENSE.md). Versions released under the MIT license stay MIT. The current license is
-available at https://owebstudio.com/license.
+available [on GitHub](https://github.com/owebstudio/.github/blob/main/LICENSE.md).
