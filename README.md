@@ -1,3 +1,5 @@
+![Image Editor Field, a Kirby plugin by oweb studio. Crop, rotate and filter your images in the Panel.](.github/cover.png)
+
 # Kirby Image Editor Field
 
 [![Buy a license for €19.99](https://img.shields.io/badge/Buy_a_license-%E2%82%AC19.99-2ea44f?style=for-the-badge&labelColor=1f6f3a)](https://owebstudio.lemonsqueezy.com/checkout/buy/8a06fd59-6e0c-4426-9c1b-95581fd7374a)
