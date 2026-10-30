@@ -8,16 +8,16 @@ return [
     'image-editor' => [
         'extends' => 'files',
         'props' => [
-            'cssMaxHeight' => function (int $value = null) {
+            'cssMaxHeight' => function (?int $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.cssMaxHeight');
             },
-            'cssMaxWidth' => function (int $value = null) {
+            'cssMaxWidth' => function (?int $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.cssMaxWidth');
             },
-            'menu' => function (array $value = null) {
+            'menu' => function (?array $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.menu');
             },
-            'menuBarPosition' => function (string $value = null) {
+            'menuBarPosition' => function (?string $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.menuBarPosition');
             }
         ],
