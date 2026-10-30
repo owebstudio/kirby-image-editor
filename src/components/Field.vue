@@ -11,6 +11,13 @@
       />
     </template>
 
+    <k-box v-if="license.locked" :theme="license.theme" class="k-image-editor-license">
+      <k-text>{{ license.message }}</k-text>
+      <k-button v-if="license.dialog" :dialog="license.dialog" icon="key" variant="filled" size="sm">
+        {{ license.button }}
+      </k-button>
+    </k-box>
+
     <k-dropzone :disabled="!hasDropzone" @drop="drop">
       <k-collection
           v-bind="collection"
@@ -61,6 +68,10 @@ export default {
     cssMaxHeight: Number,
     cssMaxWidth: Number,
     endpoints: Object,
+    license: {
+      type: Object,
+      default: () => ({})
+    },
     menu: Array,
     menuBarPosition: String,
   },
@@ -133,5 +144,13 @@ export default {
 .k-image-editor-field .k-cards-items[data-size="auto"] .k-item-content,
 .k-image-editor-field .k-cards-items[data-size="small"] .k-item-content {
   padding-right: 4rem !important;
+}
+
+.k-image-editor-license {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+  margin-bottom: var(--spacing-2);
 }
 </style>

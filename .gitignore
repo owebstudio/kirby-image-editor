@@ -5,3 +5,4 @@ package-lock.json
 .cache
 .DS_Store
 node_modules
+vendor

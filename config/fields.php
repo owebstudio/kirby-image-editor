@@ -2,6 +2,7 @@
 
 use Kirby\Cms\App as Kirby;
 use Kirby\Exception\InvalidArgumentException;
+use Kirby\Exception\PermissionException;
 use Kirby\Filesystem\F;
 use Kirby\Filesystem\Mime;
 
@@ -23,6 +24,7 @@ return [
             }
         ],
         'computed' => [
+            'license' => fn () => $license->panel(),
             'query' => function () {
                 $query = $this->query ?? $this->parentModel::CLASS_ALIAS . '.files';
 
@@ -63,7 +65,7 @@ return [
                 return $source;
             }
         ],
-        'api' => function () {
+        'api' => function () use ($license) {
             return [
                 [
                     'pattern' => '/',
@@ -108,7 +110,11 @@ return [
                 [
                     'pattern' => 'save',
                     'method' => 'POST',
-                    'action' => function () {
+                    'action' => function () use ($license) {
+                        if ($license->isLocked() === true) {
+                            throw new PermissionException($license->message());
+                        }
+
                         $field = $this->field();
                         $parent = $field->model();
 
@@ -146,7 +152,11 @@ return [
                 [
                     'pattern' => 'saveas',
                     'method' => 'POST',
-                    'action' => function () {
+                    'action' => function () use ($license) {
+                        if ($license->isLocked() === true) {
+                            throw new PermissionException($license->message());
+                        }
+
                         $field = $this->field();
                         $parent = $field->model();
 

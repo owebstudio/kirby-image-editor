@@ -36,6 +36,7 @@
         <k-button
             class="k-button-save-as"
             icon="download"
+            :disabled="license.locked"
             :text="$t('owebstudio.tui-image-editor.save.as')"
             @click="rename"
         />
@@ -43,6 +44,7 @@
             v-if="isOverwriteSupported"
             class="k-button-save"
             icon="check"
+            :disabled="license.locked"
             :text="$t('save')"
             @click="save"
         />
@@ -62,6 +64,10 @@ export default {
   },
   props: {
     endpoints: Object,
+    license: {
+      type: Object,
+      default: () => ({})
+    },
     model: Object,
     params: Object
   },

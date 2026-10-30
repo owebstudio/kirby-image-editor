@@ -78,3 +78,16 @@ return [
     ]
 ];
 ```
+
+## License
+
+Image Editor Field is a commercial plugin. It is free to use on your local computer and on staging sites. A live site needs
+a license key: buy it on [owebstudio.com](https://owebstudio.com/kirby/plugins/image-editor-field) and activate it in the
+Panel with the button in the field's notice, or in the System view (Kirby 5 and newer) by clicking the license status of
+the plugin.
+
+Without a license key, the editor still opens on a live site, but saving the edited image is locked. Your website keeps
+working.
+
+[oweb studio Commercial License](LICENSE.md). Versions released under the MIT license stay MIT. The current license is
+available at https://owebstudio.com/license.
