@@ -31,8 +31,11 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^7.4|^8.0",
+    "php": "^8.1",
     "getkirby/composer-installer": "^1.2"
+  },
+  "require-dev": {
+    "owebstudio/kirby-license": "^1.0"
   },
   "extra": {
     "installer-name": "kirby-tui-image-editor",
