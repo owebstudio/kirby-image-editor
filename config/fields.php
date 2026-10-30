@@ -1,23 +1,24 @@
 <?php
 
 use Kirby\Cms\App as Kirby;
+use Kirby\Exception\InvalidArgumentException;
 use Kirby\Filesystem\F;
-use Kirby\Cms\File;
+use Kirby\Filesystem\Mime;
 
 return [
     'image-editor' => [
         'extends' => 'files',
         'props' => [
-            'cssMaxHeight' => function (int $value = null) {
+            'cssMaxHeight' => function (?int $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.cssMaxHeight');
             },
-            'cssMaxWidth' => function (int $value = null) {
+            'cssMaxWidth' => function (?int $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.cssMaxWidth');
             },
-            'menu' => function (array $value = null) {
+            'menu' => function (?array $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.menu');
             },
-            'menuBarPosition' => function (string $value = null) {
+            'menuBarPosition' => function (?string $value = null) {
                 return $value ?? Kirby::instance()->option('owebstudio.tui-image-editor.menuBarPosition');
             }
         ],
@@ -27,6 +28,39 @@ return [
 
                 // make sure fetching resizable files
                 return $query . '.filterBy("isResizable", true)';
+            }
+        ],
+        'methods' => [
+            'imageSource' => function (string $image, string $extension): string {
+                $data = explode(',', $image, 2);
+                $mime = match ($data[0]) {
+                    'data:image/jpeg;base64' => 'image/jpeg',
+                    'data:image/png;base64' => 'image/png',
+                    default => null
+                };
+                $content = base64_decode($data[1] ?? '', true);
+
+                if ($mime === null || empty($content) === true) {
+                    throw new InvalidArgumentException('The image data is invalid');
+                }
+
+                // keep the extension of the original file if it fits the image data
+                $extension = strtolower($extension);
+
+                if (Mime::fromExtension($extension) !== $mime) {
+                    $extension = Mime::toExtension($mime);
+                }
+
+                $source = sys_get_temp_dir() . '/' . uniqid() . '.' . $extension;
+
+                F::write($source, $content);
+
+                if (F::mime($source) !== $mime) {
+                    F::remove($source);
+                    throw new InvalidArgumentException('The image data is invalid');
+                }
+
+                return $source;
             }
         ],
         'api' => function () {
@@ -78,32 +112,32 @@ return [
                         $field = $this->field();
                         $parent = $field->model();
 
-                        $id = get('id');
                         $filename = get('filename');
                         $image = get('image');
 
                         if (empty($image) === false && $file = $parent->file($filename)) {
+                            $source = $field->imageSource($image, $file->extension());
+
                             try {
-                                $data = explode(',', $image);
-                                $content = base64_decode($data[1]);
+                                if (F::mime($source) !== $file->mime()) {
+                                    throw new InvalidArgumentException([
+                                        'key' => 'file.mime.differs',
+                                        'data' => ['mime' => $file->mime()]
+                                    ]);
+                                }
 
-                                F::write($file->root(), $content);
-
-                                $newFile = new File([
-                                    'filename' => $file->filename(),
-                                    'parent' => $parent
-                                ]);
-
-                                return $newFile->panel()->pickerData([
-                                    'image' => $field->image,
-                                    'info' => $field->info ?? false,
-                                    'layout' => $field->layout,
-                                    'model' => $field->model(),
-                                    'text' => $field->text,
-                                ]);
-                            } catch (Exception $e) {
-                                //
+                                $newFile = $file->replace($source);
+                            } finally {
+                                F::remove($source);
                             }
+
+                            return $newFile->panel()->pickerData([
+                                'image' => $field->image,
+                                'info' => $field->info ?? false,
+                                'layout' => $field->layout,
+                                'model' => $field->model(),
+                                'text' => $field->text,
+                            ]);
                         }
 
                         return null;
@@ -116,36 +150,31 @@ return [
                         $field = $this->field();
                         $parent = $field->model();
 
-                        $id = get('id');
                         $filename = get('filename');
                         $rename = get('rename');
                         $image = get('image');
 
                         if (empty($image) === false && $file = $parent->file($filename)) {
+                            $source = $field->imageSource($image, $file->extension());
+                            $name = F::safeBasename($rename ?? ($file->name() . '-tuiie-' . uniqid()), false);
+
                             try {
-                                $newFileName = ($rename ?? ($file->name() . '-tuiie-' . uniqid())) . '.png';
-                                $newFilePath = $parent->root() . '/' . $newFileName;
-
-                                $data = explode(',', $image);
-                                $content = base64_decode($data[1]);
-
-                                F::write($newFilePath, $content);
-
-                                $newFile = new File([
-                                    'filename' => $newFileName,
-                                    'parent' => $parent
+                                $newFile = $parent->createFile([
+                                    'source' => $source,
+                                    'filename' => $name . '.' . F::extension($source),
+                                    'template' => $file->template()
                                 ]);
-
-                                return $newFile->panel()->pickerData([
-                                    'image' => $field->image,
-                                    'info' => $field->info ?? false,
-                                    'layout' => $field->layout,
-                                    'model' => $field->model(),
-                                    'text' => $field->text,
-                                ]);
-                            } catch (Exception $e) {
-                                //
+                            } finally {
+                                F::remove($source);
                             }
+
+                            return $newFile->panel()->pickerData([
+                                'image' => $field->image,
+                                'info' => $field->info ?? false,
+                                'layout' => $field->layout,
+                                'model' => $field->model(),
+                                'text' => $field->text,
+                            ]);
                         }
 
                         return null;
