@@ -7,7 +7,7 @@
     "owebstudio",
     "owebstudio-plugin",
     "kirby",
-    "kirby4",
+    "kirby6",
     "kirby-image-editor",
     "image-editor",
     "crop"
@@ -34,16 +34,19 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^8.1",
+    "php": "^8.3",
     "getkirby/composer-installer": "^1.2"
   },
   "require-dev": {
     "owebstudio/kirby-license": "^1.0.1"
   },
+  "conflict": {
+    "getkirby/cms": "<6.0"
+  },
   "extra": {
     "installer-name": "kirby-image-editor",
     "kirby": {
-      "compatible": "^4.0 || ^5.0"
+      "compatible": "^6.0"
     }
   },
   "prefer-stable": true
