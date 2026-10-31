@@ -1,6 +1,6 @@
 <?php
 
-namespace Oweb\TuiImageEditor\License;
+namespace Oweb\ImageEditor\License;
 
 use Kirby\Cms\App;
 use Kirby\Exception\InvalidArgumentException;
@@ -15,7 +15,7 @@ use Kirby\Toolkit\HtmlString;
  *
  * @package   oweb studio license
  * @author    Ahmet Bora
- * @link      https://owebstudio.com
+ * @link      https://github.com/owebstudio/kirby-license
  * @license   MIT
  */
 class Dialog

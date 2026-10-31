@@ -1,6 +1,6 @@
 <?php
 
-namespace Oweb\TuiImageEditor\License;
+namespace Oweb\ImageEditor\License;
 
 use Closure;
 use Kirby\Http\Remote;
@@ -14,7 +14,7 @@ use Throwable;
  *
  * @package   oweb studio license
  * @author    Ahmet Bora
- * @link      https://owebstudio.com
+ * @link      https://github.com/owebstudio/kirby-license
  * @license   MIT
  */
 class Client
@@ -36,7 +36,7 @@ class Client
 	/**
 	 * Activates the key for a new instance
 	 *
-	 * @throws \Oweb\TuiImageEditor\License\ConnectionException
+	 * @throws \Oweb\ImageEditor\License\ConnectionException
 	 */
 	public function activate(string $key, string $instanceName): array
 	{
@@ -49,7 +49,7 @@ class Client
 	/**
 	 * Deactivates the instance of the key
 	 *
-	 * @throws \Oweb\TuiImageEditor\License\ConnectionException
+	 * @throws \Oweb\ImageEditor\License\ConnectionException
 	 */
 	public function deactivate(string $key, string $instance): array
 	{
@@ -78,7 +78,7 @@ class Client
 	 * (except 429) is an answer of the License API. Everything
 	 * else counts as a connection problem.
 	 *
-	 * @throws \Oweb\TuiImageEditor\License\ConnectionException
+	 * @throws \Oweb\ImageEditor\License\ConnectionException
 	 */
 	public function post(string $action, array $data): array
 	{
@@ -106,7 +106,7 @@ class Client
 	/**
 	 * Validates the key, or one instance of it
 	 *
-	 * @throws \Oweb\TuiImageEditor\License\ConnectionException
+	 * @throws \Oweb\ImageEditor\License\ConnectionException
 	 */
 	public function validate(string $key, string|null $instance = null): array
 	{

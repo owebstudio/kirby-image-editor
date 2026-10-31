@@ -1,6 +1,6 @@
 <?php
 
-namespace Oweb\TuiImageEditor\License;
+namespace Oweb\ImageEditor\License;
 
 use RuntimeException;
 
@@ -10,7 +10,7 @@ use RuntimeException;
  *
  * @package   oweb studio license
  * @author    Ahmet Bora
- * @link      https://owebstudio.com
+ * @link      https://github.com/owebstudio/kirby-license
  * @license   MIT
  */
 class ConnectionException extends RuntimeException

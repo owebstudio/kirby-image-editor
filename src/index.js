@@ -1,7 +1,15 @@
-import Field from "./components/Field.vue";
+import ImageEditorDialog from "./components/ImageEditorDialog.vue";
+import ImageEditorField from "./components/ImageEditorField.vue";
+import ImageEditorViewButton from "./components/ImageEditorViewButton.vue";
+import icons from "./icons.js";
 
-panel.plugin("owebstudio/kirby-tui-image-editor", {
-  fields: {
-    "image-editor": Field
-  }
+panel.plugin("owebstudio/image-editor", {
+	components: {
+		"k-image-editor-dialog": ImageEditorDialog,
+		"k-image-editor-view-button": ImageEditorViewButton
+	},
+	fields: {
+		"image-editor": ImageEditorField
+	},
+	icons
 });

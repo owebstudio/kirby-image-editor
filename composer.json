@@ -1,25 +1,28 @@
 {
-  "name": "owebstudio/kirby-tui-image-editor",
-  "description": "Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.",
+  "name": "owebstudio/kirby-image-editor",
+  "description": "Crop, rotate, flip, resize and filter images right in the Kirby Panel.",
   "type": "kirby-plugin",
   "license": "proprietary",
   "keywords": [
     "owebstudio",
     "owebstudio-plugin",
     "kirby",
-    "kirby4",
+    "kirby6",
     "kirby-image-editor",
-    "image-editor"
+    "image-editor",
+    "crop"
   ],
-  "homepage": "https://owebstudio.com",
+  "homepage": "https://github.com/owebstudio/kirby-image-editor",
   "support": {
-    "email": "support@owebstudio.com"
+    "email": "support@owebstudio.com",
+    "issues": "https://github.com/owebstudio/kirby-image-editor/issues",
+    "source": "https://github.com/owebstudio/kirby-image-editor"
   },
   "authors": [
     {
       "name": "oweb studio",
       "email": "contact@owebstudio.com",
-      "homepage": "https://owebstudio.com"
+      "homepage": "https://github.com/owebstudio"
     }
   ],
   "config": {
@@ -31,16 +34,19 @@
     "sort-packages": true
   },
   "require": {
-    "php": "^8.1",
+    "php": "^8.3",
     "getkirby/composer-installer": "^1.2"
   },
   "require-dev": {
-    "owebstudio/kirby-license": "^1.0"
+    "owebstudio/kirby-license": "^1.0.1"
+  },
+  "conflict": {
+    "getkirby/cms": "<6.0"
   },
   "extra": {
-    "installer-name": "kirby-tui-image-editor",
+    "installer-name": "kirby-image-editor",
     "kirby": {
-      "compatible": "^4.0 || ^5.0"
+      "compatible": "^6.0"
     }
   },
   "prefer-stable": true

@@ -1,19 +1,30 @@
 <?php
 
 use Kirby\Cms\App as Kirby;
-use Oweb\TuiImageEditor\License\License;
+use Oweb\ImageEditor\ImageEditorField;
+use Oweb\ImageEditor\License\License;
 
 require_once __DIR__ . '/lib/license/autoload.php';
 
+load([
+    'Oweb\ImageEditor\ImageEditor'      => 'lib/ImageEditor.php',
+    'Oweb\ImageEditor\ImageEditorField' => 'lib/ImageEditorField.php'
+], __DIR__);
+
 $license = new License(
-    plugin: 'owebstudio/tui-image-editor',
+    plugin: 'owebstudio/image-editor',
     products: [15776],
-    name: 'Image Editor Field',
-    url: 'https://owebstudio.com/kirby/plugins/image-editor-field'
+    name: 'Image Editor',
+    url: 'https://owebstudio.lemonsqueezy.com/checkout/buy/8a06fd59-6e0c-4426-9c1b-95581fd7374a'
 );
 
-Kirby::plugin('owebstudio/tui-image-editor', $license->extend([
-    'options' => require_once __DIR__ . '/config/options.php',
-    'fields' => require_once __DIR__ . '/config/fields.php',
+Kirby::plugin('owebstudio/image-editor', $license->extend([
+    'api' => [
+        'routes' => require_once __DIR__ . '/config/api.php'
+    ],
+    'areas' => require_once __DIR__ . '/config/areas.php',
+    'fields' => [
+        'image-editor' => ImageEditorField::class
+    ],
     'translations' => require_once __DIR__ . '/config/translations.php'
 ]), ...$license->args());

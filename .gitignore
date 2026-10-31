@@ -1,8 +1,8 @@
 composer.lock
 package-lock.json
 .idea
-.babelrc
 .cache
 .DS_Store
+index.dev.js
 node_modules
 vendor
