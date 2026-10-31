@@ -12,7 +12,8 @@ use Kirby\Toolkit\I18n;
 use Oweb\ImageEditor\License\License;
 
 /**
- * Shared logic of the image editor field and the API routes
+ * Shared logic of the image editor field,
+ * the file view button and the API routes
  */
 class ImageEditor
 {
@@ -37,6 +38,32 @@ class ImageEditor
      * Available tools, in the order of the editor's sections
      */
     public const TOOLS = ['crop', 'rotate', 'flip', 'resize', 'filter'];
+
+    /**
+     * Returns the view button for the file view,
+     * or nothing if the file cannot be edited
+     */
+    public static function button(File $file): array|null
+    {
+        if (($data = static::file($file)) === null) {
+            return null;
+        }
+
+        if ($data['replace'] === false && $data['create'] === false) {
+            return null;
+        }
+
+        return [
+            'component' => 'k-image-editor-view-button',
+            'props'     => [
+                'editor'  => static::editor(static::config()),
+                'file'    => $data,
+                'icon'    => 'wand',
+                'license' => static::license()->panel(),
+                'text'    => I18n::translate('owebstudio.image-editor.edit')
+            ]
+        ];
+    }
 
     /**
      * Checks if the current user may save

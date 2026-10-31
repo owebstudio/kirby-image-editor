@@ -22,6 +22,7 @@ Kirby::plugin('owebstudio/image-editor', $license->extend([
     'api' => [
         'routes' => require_once __DIR__ . '/config/api.php'
     ],
+    'areas' => require_once __DIR__ . '/config/areas.php',
     'fields' => [
         'image-editor' => ImageEditorField::class
     ],
