@@ -1,6 +1,6 @@
 <?php
 
-namespace Oweb\TuiImageEditor\License;
+namespace Oweb\ImageEditor\License;
 
 use Closure;
 use Kirby\Cms\App;
@@ -73,7 +73,7 @@ class License
 	 * @param string|null $url Where to buy a license
 	 * @param int|null $store Store ID (for tests)
 	 * @param array|null $bundle Bundle product IDs (for tests)
-	 * @param \Oweb\TuiImageEditor\License\Client|null $client API client (for tests)
+	 * @param \Oweb\ImageEditor\License\Client|null $client API client (for tests)
 	 * @param string|null $file Path of the license file (for tests)
 	 */
 	public function __construct(

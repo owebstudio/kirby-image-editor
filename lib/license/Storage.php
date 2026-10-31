@@ -1,6 +1,6 @@
 <?php
 
-namespace Oweb\TuiImageEditor\License;
+namespace Oweb\ImageEditor\License;
 
 use Kirby\Exception\Exception;
 use Throwable;
@@ -28,7 +28,7 @@ class Storage
 	/**
 	 * Returns all stored activations
 	 *
-	 * @return array<\Oweb\TuiImageEditor\License\Activation>
+	 * @return array<\Oweb\ImageEditor\License\Activation>
 	 */
 	public function activations(): array
 	{

@@ -1,8 +1,8 @@
 {
-  "name": "kirby-tui-image-editor",
+  "name": "kirby-image-editor",
   "description": "Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.",
   "main": "index.js",
-  "author": "oweb studio <contact@owebstudio.com> (https://owebstudio.com)",
+  "author": "oweb studio <contact@owebstudio.com> (https://github.com/owebstudio)",
   "license": "UNLICENSED",
   "scripts": {
     "dev": "npx -y kirbyup src/index.js --watch",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:owebstudio/kirby-tui-image-editor.git"
+    "url": "git@github.com:owebstudio/kirby-image-editor.git"
   },
   "posthtml": {
     "recognizeSelfClosing": true
