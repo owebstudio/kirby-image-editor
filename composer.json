@@ -1,6 +1,6 @@
 {
   "name": "owebstudio/kirby-image-editor",
-  "description": "Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.",
+  "description": "Crop, rotate, flip, resize and filter images right in the Kirby Panel.",
   "type": "kirby-plugin",
   "license": "proprietary",
   "keywords": [
@@ -9,7 +9,8 @@
     "kirby",
     "kirby4",
     "kirby-image-editor",
-    "image-editor"
+    "image-editor",
+    "crop"
   ],
   "homepage": "https://github.com/owebstudio/kirby-image-editor",
   "support": {

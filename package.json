@@ -1,21 +1,22 @@
 {
   "name": "kirby-image-editor",
-  "description": "Full-featured photo image editor using canvas for Kirby. It is really easy, and it comes with great filters.",
-  "main": "index.js",
+  "description": "Crop, rotate, flip, resize and filter images right in the Kirby Panel.",
+  "private": true,
+  "type": "module",
   "author": "oweb studio <contact@owebstudio.com> (https://github.com/owebstudio)",
   "license": "UNLICENSED",
   "scripts": {
-    "dev": "npx -y kirbyup src/index.js --watch",
-    "build": "npx -y kirbyup src/index.js"
+    "dev": "kirbyup dev src/index.js",
+    "build": "kirbyup src/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:owebstudio/kirby-image-editor.git"
   },
-  "posthtml": {
-    "recognizeSelfClosing": true
-  },
   "dependencies": {
-    "@toast-ui/vue-image-editor": "^3.15.2"
+    "cropperjs": "2.3.1"
+  },
+  "devDependencies": {
+    "kirbyup": "4.0.0-beta.1"
   }
 }
