@@ -35,7 +35,7 @@
     "getkirby/composer-installer": "^1.2"
   },
   "require-dev": {
-    "owebstudio/kirby-license": "^1.0"
+    "owebstudio/kirby-license": "^1.0.1"
   },
   "extra": {
     "installer-name": "kirby-tui-image-editor",
