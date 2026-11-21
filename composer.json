@@ -2,6 +2,7 @@
   "name": "owebstudio/kirby-image-editor",
   "description": "Crop, rotate, flip, resize and filter images right in the Kirby Panel.",
   "type": "kirby-plugin",
+  "version": "2.0.0",
   "license": "proprietary",
   "keywords": [
     "owebstudio",
